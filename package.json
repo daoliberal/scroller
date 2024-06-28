@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
-    "@tanstack/react-query": "^4.32.6",
+    "@tanstack/react-query": "^4.36.1",
     "@tanstack/react-query-devtools": "^4.32.6",
     "@visx/axis": "^3.10.1",
     "@visx/event": "^3.3.0",
@@ -20,6 +20,7 @@
     "@visx/scale": "^3.5.0",
     "@visx/shape": "^3.5.0",
     "@visx/tooltip": "^3.3.0",
+    "@web3modal/wagmi": "^3.0.0-alpha.4",
     "apexcharts": "^3.48.0",
     "axios": "^1.6.8",
     "chart.js": "^4.4.2",
@@ -32,7 +33,9 @@
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.14.2",
     "react-toastify": "^9.1.3",
-    "recharts": "^2.12.4"
+    "recharts": "^2.12.4",
+    "viem": "^2.10.5",
+    "wagmi": "^2.8.7"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.12",

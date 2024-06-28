@@ -3,69 +3,53 @@ import axios from "axios";
 import Chart from "react-apexcharts";
 
 function DailyTransactions() {
-  // Define state to store the fetched data
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [lastValue, setLastValue] = useState(null);
 
-  // Define a useEffect hook to fetch data when the component mounts
   useEffect(() => {
-    // Define a function to fetch the data
     const fetchData = async () => {
       try {
-        // Make a GET request to the API endpoint to retrieve scroll blockchain daily transactions data
         const response = await axios.get(
-          "https://api.growthepie.xyz/v1/fundamentals_full.json"
+          "https://api.llama.fi/v2/historicalChainTvl/scroll"
         );
 
-        // Extract the relevant data for Scroll blockchain daily transactions
-        const scrollData = response.data.filter(
-          (entry) => entry.metric_key === "tvl" && entry.origin_key === "scroll"
-        );
-        // last value
+        const scrollData = response.data;
 
-        //console.log(scrollData[1037].value);
-        const formattedValue =
-          (lastValue / 1000000).toLocaleString("en-US", {
-            maximumFractionDigits: 2,
-          }) + " million";
+        const lastEntry = scrollData[scrollData.length - 1];
+        const formattedValue = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }).format(lastEntry.tvl);
         setLastValue(formattedValue);
 
-        // Sort the data by date
-        scrollData.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-        // Update the state with the fetched data
         setData(scrollData);
         setLoading(false);
       } catch (error) {
-        // Handle any errors that occur during fetching
         setError(error);
         setLoading(false);
       }
     };
 
-    // Call the fetchData function when the component mounts
     fetchData();
   }, []);
 
-  // Prepare data for the chart
   const chartData = {
     options: {
       chart: {
         id: "scroll-chart",
         type: "line",
-
         toolbar: {
-          show: false, // Hide the toolbar including the x-axis tooltip
+          show: false,
         },
       },
-
       stroke: {
         curve: "smooth",
         width: 3,
       },
-
       dataLabels: {
         enabled: false,
       },
@@ -91,7 +75,6 @@ function DailyTransactions() {
       },
       tooltip: {
         enabled: true,
-        enabledOnSeries: undefined,
         shared: false,
         followCursor: false,
         intersect: false,
@@ -114,10 +97,12 @@ function DailyTransactions() {
         },
         y: {
           formatter: function (value) {
-            // Format value to include commas for thousands separators
-            return (
-              "$ " + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            );
+            return new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "USD",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(value);
           },
         },
         marker: {
@@ -129,20 +114,18 @@ function DailyTransactions() {
         label: false,
       },
     },
-
     series: [
       {
         name: "",
         data: data.map((entry) => [
-          new Date(entry.date).getTime(),
-          entry.value,
+          entry.date * 1000, // Convert seconds to milliseconds
+          entry.tvl,
         ]),
         color: "#1d4ed8",
       },
     ],
   };
 
-  // Render loading state while data is being fetched
   if (loading) {
     return (
       <div>
@@ -151,18 +134,19 @@ function DailyTransactions() {
     );
   }
 
-  // Render error message if an error occurs
   if (error) {
     return <div>Error: {error.message}</div>;
   }
 
-  // Render the chart
   return (
     <div>
-      <div>
-        <h1 className="flex justify-center text-1xl font-mono font-bold ml-4 pt-2 mr-2  primary-content">
+      <div className="flex justify-between items-center ml-4 pt-2 mr-2">
+        <h1 className="text-1xl font-mono font-bold primary-content">
           Total Value Locked
         </h1>
+        <span className="text-1xl font-mono font-bold primary-content">
+          {lastValue}
+        </span>
       </div>
       <Chart
         options={chartData.options}

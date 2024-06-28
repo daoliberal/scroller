@@ -1,4 +1,3 @@
-import Featured from "../components/Featured";
 const About = () => {
   return (
     <>

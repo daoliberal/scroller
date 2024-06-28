@@ -3,6 +3,7 @@ import { FaBarsStaggered } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 import NavLinks from "./NavLinks";
 import { useEffect, useState } from "react";
+import logo from "../assets/logo.png";
 
 const themes = {
   emerald: "emerald",
@@ -30,9 +31,14 @@ const Navbar = () => {
           {/* Title */}
           <NavLink
             to="/"
-            className="hidden lg:flex btn  text-3xl items-center font-mono"
+            className="hidden lg:flex text-3xl items-center font-mono w-20 h-20"
           >
-            Scroller
+            <img
+              src={logo}
+              key="dappmapp"
+              alt="logo"
+              className="h-full w-full"
+            />
           </NavLink>
           {/* Dropdown */}
           <div className="dropdown">

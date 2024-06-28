@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 
 const links = [
   { id: 1, url: "/", text: "home" },
-  { id: 2, url: "projects", text: "projects" },
-  { id: 3, url: "case-study", text: "case study" },
+  // { id: 2, url: "projects", text: "projects" },
+  { id: 2, url: "case-study", text: "case study" },
 ];
 
 const NavLinks = () => {
